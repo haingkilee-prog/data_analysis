@@ -1,0 +1,804 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "6292d09e-5af8-4088-ae51-f9074134ec08",
+   "metadata": {},
+   "source": [
+    "# **1.셀레니움**\n",
+    "웹브라우저를 사람이 직접 조작하는 것처럼 자동으로 제어할 수 있게 해주는 웹자동화 도구."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "a48e4c0b-7a4f-4331-a73a-4f8368e0c60d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: selenium in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (4.38.0)\n",
+      "Requirement already satisfied: urllib3<3.0,>=2.5.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from urllib3[socks]<3.0,>=2.5.0->selenium) (2.5.0)\n",
+      "Requirement already satisfied: trio<1.0,>=0.31.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from selenium) (0.32.0)\n",
+      "Requirement already satisfied: trio-websocket<1.0,>=0.12.2 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from selenium) (0.12.2)\n",
+      "Requirement already satisfied: certifi>=2025.10.5 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from selenium) (2025.11.12)\n",
+      "Requirement already satisfied: typing_extensions<5.0,>=4.15.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from selenium) (4.15.0)\n",
+      "Requirement already satisfied: websocket-client<2.0,>=1.8.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from selenium) (1.9.0)\n",
+      "Requirement already satisfied: attrs>=23.2.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (25.4.0)\n",
+      "Requirement already satisfied: sortedcontainers in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (2.4.0)\n",
+      "Requirement already satisfied: idna in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (3.11)\n",
+      "Requirement already satisfied: outcome in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (1.3.0.post0)\n",
+      "Requirement already satisfied: sniffio>=1.3.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (1.3.1)\n",
+      "Requirement already satisfied: cffi>=1.14 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio<1.0,>=0.31.0->selenium) (2.0.0)\n",
+      "Requirement already satisfied: wsproto>=0.14 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from trio-websocket<1.0,>=0.12.2->selenium) (1.3.2)\n",
+      "Requirement already satisfied: pysocks!=1.5.7,<2.0,>=1.5.6 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from urllib3[socks]<3.0,>=2.5.0->selenium) (1.7.1)\n",
+      "Requirement already satisfied: pycparser in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from cffi>=1.14->trio<1.0,>=0.31.0->selenium) (2.23)\n",
+      "Requirement already satisfied: h11<1,>=0.16.0 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from wsproto>=0.14->trio-websocket<1.0,>=0.12.2->selenium) (0.16.0)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "[notice] A new release of pip is available: 24.0 -> 25.3\n",
+      "[notice] To update, run: C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pip install --upgrade pip\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install selenium"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "e3b9f52d-5dca-4546-ad22-31e6bdfd993b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import time \n",
+    "from selenium import webdriver\n",
+    "from selenium.webdriver.common.keys import Keys"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "1551f7cf-5b54-476d-bccf-d63cdd217e8a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver = webdriver.Chrome()\n",
+    "driver.get('http://www.google.com') \n",
+    "search = driver.find_element(\"name\", \"q\")\n",
+    "search.send_keys(\"날씨\")\n",
+    "time.sleep(2)\n",
+    "search.send_keys(Keys.RETURN)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "942d5edb-2a6e-4103-926a-993e6928a4cb",
+   "metadata": {},
+   "source": [
+    "- 위의 것 설명; googl.com을 찾아서, name이 q인 것(질문을 넣는 상자 주소)을 찾아,\n",
+    "- 그곳에 '날씨'를 입력해라는 의미\n",
+    "- 여기에 2초간 sleep을 두는 이유는 안 둘 경우, 너무 빨리 엔터를 눌러, 사람이 아니라 로봇으로 인식할 수 있기 때문- 해보니 그래도 로봇인지 물음..\n",
+    "- 그 후에 엔터키를 눌러 결과값까지 볼 수 있게 함."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8bc84512-bd38-40dd-9c29-8676fd86e3fb",
+   "metadata": {},
+   "source": [
+    "# **2. 네이버 웹툰 리뷰 크롤링**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0ee6ca48-47d0-4c0d-8d1b-f8d7886d29f3",
+   "metadata": {},
+   "source": [
+    "### XPATH\n",
+    "HTML, XML 문서 안에서 특정 요소를 정확하게 찾아가기 위한 경로 표현식."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "4cb307eb-5fce-45f1-902a-8515de5cd234",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from selenium.webdriver.common.by import By"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "7e795078-7c07-46b0-a462-ff7b12b49b61",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "*** 베스트 댓글 ***\n"
+     ]
+    }
+   ],
+   "source": [
+    "driver = webdriver.Chrome()\n",
+    "driver.get('https://comic.naver.com/webtoon/detail?titleId=823195&no=172&week=wed')\n",
+    "time.sleep(2)\n",
+    "\n",
+    "print(\"*** 베스트 댓글 ***\")\n",
+    "# /html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/ul/li[1]\n",
+    "# /html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/ul/li[2]\n",
+    "# /html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/ul/li[3]\n",
+    "# 위의 것을 보면 공통적으로 같은 부분이 잇다. 이 부분만 아래와 같이 옮긴다. 수천개의 댓글의 경우 이렇게 하지 않ㅇ면 안된다.\n",
+    "xpath = '/html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/ul/li'\n",
+    "best_comment_elements = driver.find_elements(By.XPATH, xpath)\n",
+    "\n",
+    "for li in best_comment_elements:\n",
+    "    try:\n",
+    "        # //*[@id=\"wcc_root\"]/section/ul/li[1]/div[1]/div[2]/div/p\n",
+    "        # //*[@id=\"wcc_root\"]/section/ul/li[2]/div[1]/div[2]/div/p\n",
+    "        comment_p = li.find_element(By.XPATH, \"./div[1]/div[2]/div/p\")\n",
+    "        comment_text = comment_p.text.strip()  # 앞 뒤에 공백이 있으면 지워라.\n",
+    "        print(comment_text)\n",
+    "        print(\"-\" * 30)\n",
+    "    except Exception as e:\n",
+    "        print(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "997db4dc-ebf4-4a14-80ca-a180b5b80a4b",
+   "metadata": {},
+   "source": [
+    "- 위에서 2초간 여유를 줘야 되는 이유; 안주고 바로 크롤링하면 데이터가 오기도 전에(비록 1초 미만의 시간이지만) 크롤링을 시작하게 하는 것이기 때문에 문제가 있을 수 있다."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "ca11570e-ed79-4e11-88ba-f1f7d2a78e02",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# /html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/div[4]/button[2]\n",
+    "driver.find_element(By.XPATH, \"/html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/div[4]/button[2]\").click()\n",
+    "time.sleep(2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "f9aa5c55-8c6a-4009-8d8f-942dd582af45",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "*** 전체 댓글***\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"*** 전체 댓글***\")\n",
+    "xpath = '/html/body/div[1]/div[5]/div/div/div[5]/div[1]/div[3]/div/section/ul/li'\n",
+    "total_comment_elements = driver.find_elements(By.XPATH, xpath)\n",
+    "\n",
+    "for li in best_comment_elements:\n",
+    "    try:\n",
+    "        comment_p = li.find_element(By.XPATH, \"./div[1]/div[2]/div/p\")\n",
+    "        comment_text = comment_p.text.strip()  # 앞 뒤에 공백이 있으면 지워라.\n",
+    "        print(comment_text)\n",
+    "        print(\"-\" * 30)\n",
+    "    except Exception as e:\n",
+    "        print(e)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fc5f210a-9c68-42a9-a030-7cc2e7bf45cf",
+   "metadata": {},
+   "source": [
+    "# **3. Pixabay 이미지 크롤링**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "04fd8b66-e116-4e80-96e0-b1ccb9cc21e5",
+   "metadata": {},
+   "outputs": [
+    {
+     "ename": "ImportError",
+     "evalue": "cannot import name 'WebDriverwait' from 'selenium.webdriver.support.ui' (C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\selenium\\webdriver\\support\\ui.py)",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[31m---------------------------------------------------------------------------\u001b[39m",
+      "\u001b[31mImportError\u001b[39m                               Traceback (most recent call last)",
+      "\u001b[36mCell\u001b[39m\u001b[36m \u001b[39m\u001b[32mIn[39]\u001b[39m\u001b[32m, line 2\u001b[39m\n\u001b[32m      1\u001b[39m \u001b[38;5;28;01mfrom\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01murllib\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mrequest\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mimport\u001b[39;00m Request, urlopen\n\u001b[32m----> \u001b[39m\u001b[32m2\u001b[39m \u001b[38;5;28;01mfrom\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mselenium\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mwebdriver\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01msupport\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mui\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mimport\u001b[39;00m WebDriverwait\n\u001b[32m      3\u001b[39m \u001b[38;5;28;01mfrom\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[34;01mselenium\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01mwebdirver\u001b[39;00m\u001b[34;01m.\u001b[39;00m\u001b[34;01msupport\u001b[39;00m\u001b[38;5;250m \u001b[39m\u001b[38;5;28;01mimport\u001b[39;00m expected_conditions \u001b[38;5;28;01mas\u001b[39;00m EC\n",
+      "\u001b[31mImportError\u001b[39m: cannot import name 'WebDriverwait' from 'selenium.webdriver.support.ui' (C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\selenium\\webdriver\\support\\ui.py)"
+     ]
+    }
+   ],
+   "source": [
+    "from urllib.request import Request, urlopen\n",
+    "from selenium.webdriver.support.ui import WebDriverwait\n",
+    "from selenium.webdirver.support import expected_conditions as EC"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "97a7722c-29cd-4e79-b402-b7f964b243a5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver = webdriver.Chrome()\n",
+    "url = \"https://pixabay.com/ko/images/search/%ea%b0%95%ec%95%84%ec%a7%80/\"\n",
+    "driver.get(url)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "a980a11e-e614-4c8f-aaff-fdfbf06dcd12",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "\n",
+    "# /html/body/div[1]/div[1]/div/div[2]/div[3]/div/div/div[1]/div[1]/div/a/img\n",
+    "image_xpath = '/html/body/div[1]/div[1]/div/div[2]/div[3]/div/div/div[1]/div[1]/div/a/img'\n",
+    "\n",
+    "wait = WebDriverWait(driver,10) # 최대 10초까지 기다림\n",
+    "image_element = wait.until(EC.presence_of_all_elements_located((By.XPATH, image_xpath)))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "5b5128ed-13b4-4516-b5c1-bbab6c47edac",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "https://cdn.pixabay.com/photo/2024/01/15/21/13/puppy-8510899_1280.jpg\n"
+     ]
+    }
+   ],
+   "source": [
+    "image_url = image_element[0].get_attribute('src')  # src는 그 강아지의 사진 url.\n",
+    "print(image_url)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "e9b6e048-4305-4acb-8fee-9e334b66103a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<urllib.request.Request at 0x13bcbbf4250>"
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# User-Agent: 대부분의 사용자의 이 주소는 비슷. 이것을 넣는 이유; 크롤링을 하고 있지 않고 사람이 하고 있다는 것을 말하기 위함.\n",
+    "# User-Agent의 위치 ; 예)naver.com을 눌러 F12 클릭, 상단 메뉴 중 네트워크 클릭, 본문의 새로고침 한번 눌리면 모든 데이터가 들어옴.\n",
+    "# 그리고 나서 제일 위 naver.com 서류를 눌림- 내려서 보면 \"요청 헤더\" 맨 밑에 있음.\n",
+    "\n",
+    "image_byte = Request(image_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})\n",
+    "image_byte\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "3e5c6c82-095f-471a-8524-4b1552e4724a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "다운로드 완료!!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 위 사진을 파일로 저장.- 파일에 저장된 것 확인했음.\n",
+    "# wb; write binary (텍스트가 아닌 사진, 동영상 등을 binary로 써주겠다)\n",
+    "# 홈페이지 주소 뒤에 /robots.txt를 하면 크롤링 allow, disallow를 볼 수 있다.\n",
+    "\n",
+    "with open('dog.jpg', 'wb') as f:\n",
+    "    f.write(urlopen(image_byte).read())\n",
+    "print('다운로드 완료!!')\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "4617bf96-403c-4696-b943-6f33a3c02e05",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "driver.quit()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "3c765054-8815-4ff2-984d-3a64ce3c8ac4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "다운로드 완료!!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# 한셀에 위의 것을 모두 합침.\n",
+    "\n",
+    "from urllib.request import Request, urlopen\n",
+    "from selenium.webdriver.support.ui import WebDriverWait\n",
+    "from selenium.webdriver.support import expected_conditions as EC\n",
+    "\n",
+    "driver = webdriver.Chrome()\n",
+    "url = \"https://pixabay.com/ko/images/search/강아지/\"\n",
+    "driver.get(url)\n",
+    "image_xpath = '/html/body/div[1]/div[1]/div/div[2]/div[3]/div/div/div[3]/div[1]/div/a/img'\n",
+    "wait = WebDriverWait(driver, 10)\n",
+    "\n",
+    "image_element = wait.until(EC.presence_of_element_located((By.XPATH, image_xpath)))\n",
+    "image_url = image_element.get_attribute('src')\n",
+    "image_byte = Request(image_url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'})\n",
+    "image_byte\n",
+    "\n",
+    "with open('dog2.jpg', 'wb') as f:\n",
+    "    f.write(urlopen(image_byte).read())\n",
+    "print('다운로드 완료!!')\n",
+    "driver.quit()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5915afcf-3d39-4560-ae29-2a99a7be9030",
+   "metadata": {},
+   "source": [
+    "## **4.야놀자 리뷰 크롤링**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 77,
+   "id": "c95ce99c-d3b7-4ed8-a951-55da217d9b17",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def crawl_yanolja_reviews(name, url, max_scroll=100):\n",
+    "    review_list = []\n",
+    "    driver = webdriver.Chrome()\n",
+    "    driver.get(url)\n",
+    "    time.sleep(3)\n",
+    "\n",
+    "    last_height = driver.execute_script(\"return document.body.scrollHeight\")\n",
+    "    # print(last_height)\n",
+    "    same_count = 0\n",
+    "    scroll_times = 0\n",
+    "\n",
+    "    while True:\n",
+    "        scroll_times += 1\n",
+    "        driver.execute_script(\"window.scrollTo(0, document.body.scrollHeight);\")\n",
+    "        time.sleep(2)\n",
+    "        new_height = driver.execute_script(\"return document.body.scrollHeight\")\n",
+    "\n",
+    "        if new_height == last_height:\n",
+    "            same_count += 1\n",
+    "        else:\n",
+    "            same_count = 0\n",
+    "            last_height = new_height\n",
+    "\n",
+    "        if same_count >= 3:\n",
+    "            print('더 이상 새로운 리뷰가 없습니다.')\n",
+    "            break\n",
+    "\n",
+    "        if scroll_times >= max_scroll:\n",
+    "            print('최대 스크롤 횟수 도달. 종료합니다.')\n",
+    "            break\n",
+    "\n",
+    "    # /html/body/div[1]/section/div/div[5]/div[1]\n",
+    "    # /html/body/div[1]/section/div/div[5]/div[2]\n",
+    "    containers = driver.find_elements(By.XPATH, \"/html/body/div[1]/section/div/div[5]/div\")\n",
+    "    # print('총 리뷰 개수: ', len(containers))\n",
+    "\n",
+    "    for c in containers:\n",
+    "        try:\n",
+    "            review_text = c.text.strip()\n",
+    "        except:\n",
+    "            review_text = \"\"\n",
+    "\n",
+    "        try:\n",
+    "            # /html/body/div[1]/section/div/div[5]/div[2]/div[2]/div/div[1]/div[1]/div[2]/p\n",
+    "            # /html/body/div[1]/section/div/div[5]/div[3]/div[2]/div/div[1]/div[1]/div[2]/p\n",
+    "            date_text = c.find_element(By.XPATH, \".//div/div/div/div/p\").text\n",
+    "        except:\n",
+    "            date_text = \"\"\n",
+    "\n",
+    "        review_list.append({\n",
+    "            \"review\": review_text,\n",
+    "            \"date\": date_text\n",
+    "        })\n",
+    "\n",
+    "    driver.quit()\n",
+    "    return review_list\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "id": "edc77df6-7dd0-4920-9261-e9530b00446d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: pandas in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (2.3.3)\n",
+      "Requirement already satisfied: numpy>=1.23.2 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from pandas) (2.3.5)\n",
+      "Requirement already satisfied: python-dateutil>=2.8.2 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from pandas) (2.9.0.post0)\n",
+      "Requirement already satisfied: pytz>=2020.1 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from pandas) (2025.2)\n",
+      "Requirement already satisfied: tzdata>=2022.7 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from pandas) (2025.2)\n",
+      "Requirement already satisfied: six>=1.5 in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "[notice] A new release of pip is available: 24.0 -> 25.3\n",
+      "[notice] To update, run: C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pip install --upgrade pip\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install pandas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "id": "384a2ffd-30c1-440d-97f5-2f4e68e8f196",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Requirement already satisfied: openpyxl in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (3.1.5)\n",
+      "Requirement already satisfied: et-xmlfile in c:\\users\\user\\appdata\\local\\programs\\python\\python311\\lib\\site-packages (from openpyxl) (2.0.0)\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "\n",
+      "[notice] A new release of pip is available: 24.0 -> 25.3\n",
+      "[notice] To update, run: C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\python.exe -m pip install --upgrade pip\n"
+     ]
+    }
+   ],
+   "source": [
+    "!pip install openpyxl"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 78,
+   "id": "1bee5b34-668b-406e-aec6-6f1571e4e009",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import openpyxl"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 79,
+   "id": "0b70dd0b-9683-4201-bcde-98e0ae662470",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "더 이상 새로운 리뷰가 없습니다.\n",
+      "                                              review        date\n",
+      "0  2025.05.23\\n이요피글*출장\\n실버-취사/스탠다드/침대\\n지인들이랑 갔는데 ...  2025.05.23\n",
+      "1  2025.02.10\\n으니으*가족과 함께\\n실버-클린/설악마운틴뷰/침대\\n울산바위뷰...  2025.02.10\n",
+      "2  2024.10.19\\n가랑비너라*****가족과 함께\\n골드-클린/설악마운틴뷰/침대\\...  2024.10.19\n",
+      "3  2025.03.03\\n목바*가족과 함께\\n골드-클린/설악마운틴뷰/침대\\n부모님모시고...  2025.03.03\n",
+      "4  2024.09.11\\n홍대해바라***가족과 함께\\n실버-클린/설악마운틴뷰/침대\\n좋...  2024.09.11\n",
+      "엑셀 저장 완료!!\n"
+     ]
+    }
+   ],
+   "source": [
+    "# crawl_yanolja_reviews(\"소노펠리체 델피노\", \"https://nol.yanolja.com/reviews/domestic/10040685\", 3)\n",
+    "\n",
+    "if __name__ == \"__main__\":\n",
+    "    name = \"소노펠리체 델피노\"\n",
+    "    url = \"https://nol.yanolja.com/reviews/domestic/10040685\"\n",
+    "    reviews = crawl_yanolja_reviews(name, url)\n",
+    "    df = pd.DataFrame(reviews)\n",
+    "    print(df.head())\n",
+    "    file_name = f'{name}_reviews.xlsx'\n",
+    "    df.to_excel(file_name, index=False)\n",
+    "    print(\"엑셀 저장 완료!!\")\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3be9b7d6-b7dd-4060-b71e-cdad7e468274",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e67b882e-58e7-4c1d-9e4e-8e256b201984",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e333f212-4ea9-43ba-bc4a-6ecc4d4fe97c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7c479bc0-c496-4267-b2f9-de77dcfa7e80",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d8278bde-096d-4850-a514-85f42980498c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9ce45afc-f1ee-4a32-9a0a-c3a3b6d71a45",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "62595e45-a663-4e4a-a9e3-1302cccc4eb9",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8f186a6b-f191-49db-a0c7-bbf49f8dbcfa",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0eba0c83-0b29-41cd-afc8-5d9c358f7045",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e87c9092-5769-46a9-abd6-591323d850b7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a7d49568-c8dd-4a12-8df0-f4819c44f9d8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "796735e4-7cb4-4b8c-8084-a9115bfe1a7e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ccb68e0d-c6ce-4217-9756-b4c2a9bf734a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "48c76401-0e70-4894-8227-f126bd3f4f4f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "629413c0-b2c2-44df-880f-f190883d8457",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a521ec7d-c4ba-4382-b35c-25952a35f43c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c8887fc3-800d-420e-8079-a609b59d758d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1cefddf3-3e27-42a4-a699-d95d33e8b403",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9e0e9ab8-c47b-4cac-924c-c5c48a6ea849",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d5423d27-41ad-4391-83be-cf1f70c561d5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "69c5d672-7074-49ad-b1c0-de28626fb701",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f31c43f7-0ce3-4448-a43e-cd721382fcb9",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dea69ab8-0c41-4c0f-a2d8-dd0009195de0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5f4a337e-86f2-4054-a379-978b8044f03d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "57f14d35-76a8-48ba-a459-ed080f36cb9c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "257cd585-edb4-4ff2-a20c-9cff58a74ea3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d495550c-1e28-4c44-adaf-7a63ad7c494e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.9"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
